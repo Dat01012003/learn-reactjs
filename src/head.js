@@ -1,8 +1,11 @@
+// Trong tệp head.js
+import React from 'react';
 
-function head() {
+function Head({ props }) {
+    console.log('props', props);
     return (
-        <p>fbhekgbkn</p>
+        <div className="box" style={{ backgroundColor: props }}>hthrrea</div>
     );
 }
 
-export default head;
+export default Head;
