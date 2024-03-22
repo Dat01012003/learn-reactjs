@@ -1,13 +1,18 @@
-import logo from './logo.svg';
 import React from 'react';
 // import './App.css';
+import { Link, Route } from 'react-router-dom/cjs/react-router-dom.min';
 import AlbumFeature from './features/Album';
-
+import TodoFeature from './features/Todo';
+import Header from './components/Header';
 
 function App() {
   return (
     <div className="App">
-      <AlbumFeature />
+      
+      <Header/>
+      
+      <Route path="/todos" component={TodoFeature}/>
+      <Route path="/albums" component={AlbumFeature}/>
 
     </div >
   );
