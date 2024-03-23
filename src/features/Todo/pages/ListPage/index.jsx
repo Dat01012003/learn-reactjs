@@ -1,6 +1,5 @@
 import React from "react";
 import TodoList from "../../components/Todolist";
-import TodoForm from "../../components/Todoform";
 
 ListPage.propTypes = {};
 
@@ -19,13 +18,9 @@ function ListPage(props) {
       title: "code",
     },
   ];
-  const handleTodoFormSubmit = (values) => {
-    console.log("Form submit", values);
-  };
+
   return (
     <div>
-      <h3>what todo</h3>
-      <TodoForm onsubmit={handleTodoFormSubmit} />
       <h3>Todo list</h3>
       <TodoList todoList={todoList} />
     </div>

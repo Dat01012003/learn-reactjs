@@ -30,7 +30,7 @@ function PasswordField(props) {
         render={({ field }) => (
           <Input
             {...field}
-            id={name}
+            id={name} // Chuyển id như là một prop của Input
             type={showPassword ? "text" : "password"}
             label={label}
             endAdornment={
@@ -47,7 +47,7 @@ function PasswordField(props) {
           />
         )}
         disabled={disabled}
-        error={!!errors}
+        error={!!errors[name]}
         helperText={errors[name]?.message}
       />
     </FormControl>

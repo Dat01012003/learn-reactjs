@@ -5,6 +5,7 @@ function Register(props) {
   const handleSubmit = (values) => {
     console.log("Form Submit", values);
   };
+
   return (
     <div>
       <RegisterForm onSubmit={handleSubmit} />

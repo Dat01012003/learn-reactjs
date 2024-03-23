@@ -56,7 +56,9 @@ function RegisterForm(props) {
   });
 
   const handleSubmit = (values) => {
+    console.log("Submitting form with values:", values); // Thêm console log để kiểm tra
     const { onSubmit } = props;
+
     if (onSubmit) {
       onSubmit(values);
     }
@@ -84,7 +86,7 @@ function RegisterForm(props) {
         />
 
         <Button
-          type="button"
+          type="submit"
           className={classes.submit}
           variant="contained"
           color="primary"

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useForm } from "formik"; // Import hook 'useForm' from Formik
+import { useForm } from "react-hook-form";
+// import { useForm } from "formik"; // Import hook 'useForm' from Formik
 import InputField from "../../../../components/form-controls/InputField";
 
 TodoForm.propTypes = {
@@ -17,11 +18,9 @@ function TodoForm(props) {
     console.log("TODO FORM: ", values);
   };
   return (
-    <div onSubmit={form.handleSubmit(handleSubmit)}>
-      {" "}
-      {/* Thay `onsubmit` thành `onSubmit` */}
+    <form onSubmit={form.handleSubmit(handleSubmit)}>
       <InputField name="title" label="Todo" form={form} />
-    </div>
+    </form>
   );
 }
 
