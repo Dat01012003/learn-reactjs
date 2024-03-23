@@ -1,6 +1,6 @@
 import React from 'react';
 // import './App.css';
-import { Link, Route } from 'react-router-dom/cjs/react-router-dom.min';
+import { Route } from 'react-router-dom/cjs/react-router-dom.min';
 import AlbumFeature from './features/Album';
 import TodoFeature from './features/Todo';
 import Header from './components/Header';

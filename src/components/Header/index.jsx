@@ -15,12 +15,13 @@ import Register from "../../features/Auth/components/Register";
 export default function Header() {
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClose = (event, reason) => {
+    if (reason && reason === "backdropClick") return;
+    setOpen(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
   return (

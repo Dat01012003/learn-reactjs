@@ -1,9 +1,10 @@
 import React from "react";
-import TodoList from "./components/Todolist";
-import TodoForm from "./components/TodoForm";
-TodoFeature.propTypes = {};
+import TodoList from "../../components/Todolist";
+import TodoForm from "../../components/Todoform";
 
-function TodoFeature(props) {
+ListPage.propTypes = {};
+
+function ListPage(props) {
   const todoList = [
     {
       id: 1,
@@ -31,4 +32,4 @@ function TodoFeature(props) {
   );
 }
 
-export default TodoFeature;
+export default ListPage;
