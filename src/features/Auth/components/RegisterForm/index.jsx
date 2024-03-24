@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import InputField from "../../../../components/form-controls/InputField";
 import PasswordField from "../../../../components/form-controls/PasswordField";
+import TextFieldHF from "../../../../components/hook-form/TextFieldHF";
+import FormProvider from "../../../../components/hook-form/FormProvider";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import * as yup from "yup";
 import { Avatar, Button, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -26,21 +32,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-RegisterForm.propTypes = {
-  onSubmit: PropTypes.func,
-};
+// RegisterForm.propTypes = {
+//   onSubmit: PropTypes.func,
+// };
 
-function RegisterForm(props) {
+function RegisterForm() {
   const classes = useStyles();
 
-  const handleSubmit = (values) => {
-    console.log("Submitting form with values:", values);
-    const { onSubmit } = props;
+  const [showPassword, setShowPassword] = useState(false);
 
-    if (onSubmit) {
-      onSubmit(values);
-    }
-    form.reset();
+  const toggleShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const schema = yup.object().shape({
@@ -64,8 +66,22 @@ function RegisterForm(props) {
       retypePassword: "",
     },
     resolver: yupResolver(schema),
-    onSubmit: handleSubmit,
   });
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = form;
+
+  const values = watch();
+
+  console.log("values", values);
+
+  const onSubmit2 = (data) => {
+    console.log("data", data);
+  };
 
   return (
     <div className={classes.root}>
@@ -77,26 +93,33 @@ function RegisterForm(props) {
         Create An Account
       </Typography>
 
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <InputField name="fullName" label="Full Name" form={form} />
-        <InputField name="email" label="Email" form={form} />
-        <PasswordField name="password" label="Password" form={form} />
-        <PasswordField
-          name="retypePassword"
-          label="Retype Password"
-          form={form}
+      <FormProvider methods={form} onSubmit={handleSubmit(onSubmit2)}>
+        <TextFieldHF name="fullName" label="Full name" />
+        <TextFieldHF name="email" label="Email" />
+        <TextFieldHF
+          name="password"
+          label="Pass Word"
+          type={showPassword ? "text" : "password"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={toggleShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
+        <TextFieldHF name="retypePassword" label="Retype Password" />
 
-        <Button
-          type="submit"
-          className={classes.submit}
-          variant="contained"
-          color="primary"
-          fullWidth
-        >
+        <Button type="submit" variant="contained" color="primary" fullWidth>
           Create an account
         </Button>
-      </form>
+      </FormProvider>
     </div>
   );
 }
