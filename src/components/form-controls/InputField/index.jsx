@@ -1,22 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { TextField } from "@mui/material";
-import { string } from "yup";
 
-InputField.propTypes = {
-  name: PropTypes.string,
-  label: PropTypes.string,
-  disable: PropTypes.bool,
-};
-
-function InputField({ name, label, disable }) {
-  // const { name, label, disable } = props;
-  const { control, watch } = useFormContext();
-  const { values } = watch();
-
-  console.log("name", values);
-
+function InputField(props) {
+  const { form, name, label, disable } = props;
+  const { control } = form;
   return (
     <Controller
       name={name}

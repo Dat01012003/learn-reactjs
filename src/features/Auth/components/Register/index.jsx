@@ -8,7 +8,7 @@ function Register(props) {
 
   return (
     <div>
-      <RegisterForm />
+      <RegisterForm onSubmit={handleSubmit} />
     </div>
   );
 }

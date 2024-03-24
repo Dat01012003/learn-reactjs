@@ -1,19 +1,16 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import InputField from "../../../../components/form-controls/InputField";
-import PasswordField from "../../../../components/form-controls/PasswordField";
-import TextFieldHF from "../../../../components/hook-form/TextFieldHF";
-import FormProvider from "../../../../components/hook-form/FormProvider";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
+import { LockOutlined } from "@mui/icons-material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import * as yup from "yup";
 import { Avatar, Button, Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import { makeStyles } from "@mui/styles";
-import { LockOutlined } from "@mui/icons-material";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import FormProvider from "../../../../components/hook-form/FormProvider";
+import TextFieldHF from "../../../../components/hook-form/TextFieldHF";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,7 +22,7 @@ const useStyles = makeStyles(() => ({
   },
   title: {
     textAlign: "center",
-    margin: "16px 0 24px 0",
+    margin: "16px 0 16px 0",
   },
   submit: {
     margin: "24px 0 16px 0",
@@ -40,11 +37,13 @@ function RegisterForm() {
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
-
+  const [showretypePassword, setShowRetypePassword] = useState(false);
   const toggleShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-
+  const toggleShowRetypePassword = () => {
+    setShowRetypePassword((prevShowRetypePassword) => !prevShowRetypePassword);
+  };
   const schema = yup.object().shape({
     fullName: yup.string().required("Please enter your full name"),
     email: yup
@@ -68,12 +67,7 @@ function RegisterForm() {
     resolver: yupResolver(schema),
   });
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = form;
+  const { handleSubmit, watch } = form;
 
   const values = watch();
 
@@ -94,9 +88,14 @@ function RegisterForm() {
       </Typography>
 
       <FormProvider methods={form} onSubmit={handleSubmit(onSubmit2)}>
-        <TextFieldHF name="fullName" label="Full name" />
-        <TextFieldHF name="email" label="Email" />
         <TextFieldHF
+          className={classes.title}
+          name="fullName"
+          label="Full name"
+        />
+        <TextFieldHF className={classes.title} name="email" label="Email" />
+        <TextFieldHF
+          className={classes.title}
           name="password"
           label="Pass Word"
           type={showPassword ? "text" : "password"}
@@ -114,9 +113,34 @@ function RegisterForm() {
             ),
           }}
         />
-        <TextFieldHF name="retypePassword" label="Retype Password" />
 
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        <TextFieldHF
+          className={classes.title}
+          name="retypePassword"
+          label="Retype Password "
+          type={showretypePassword ? "text" : "password"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={toggleShowRetypePassword}
+                  edge="end"
+                >
+                  {showretypePassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        <Button
+          className={classes.submit}
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+        >
           Create an account
         </Button>
       </FormProvider>
