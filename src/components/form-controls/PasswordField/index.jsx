@@ -18,7 +18,7 @@ function PasswordField(props) {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
-    setShowPassword((x) => !x);
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   return (
@@ -30,7 +30,7 @@ function PasswordField(props) {
         render={({ field }) => (
           <Input
             {...field}
-            id={name} // Chuyển id như là một prop của Input
+            id={name}
             type={showPassword ? "text" : "password"}
             label={label}
             endAdornment={
@@ -58,6 +58,7 @@ PasswordField.propTypes = {
   form: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default PasswordField;

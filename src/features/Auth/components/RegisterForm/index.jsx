@@ -32,6 +32,17 @@ RegisterForm.propTypes = {
 
 function RegisterForm(props) {
   const classes = useStyles();
+
+  const handleSubmit = (values) => {
+    console.log("Submitting form with values:", values);
+    const { onSubmit } = props;
+
+    if (onSubmit) {
+      onSubmit(values);
+    }
+    form.reset();
+  };
+
   const schema = yup.object().shape({
     fullName: yup.string().required("Please enter your full name"),
     email: yup
@@ -53,17 +64,8 @@ function RegisterForm(props) {
       retypePassword: "",
     },
     resolver: yupResolver(schema),
+    onSubmit: handleSubmit,
   });
-
-  const handleSubmit = (values) => {
-    console.log("Submitting form with values:", values); // Thêm console log để kiểm tra
-    const { onSubmit } = props;
-
-    if (onSubmit) {
-      onSubmit(values);
-    }
-    form.reset();
-  };
 
   return (
     <div className={classes.root}>
