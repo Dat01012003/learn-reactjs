@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
     margin: "24px 0 16px 0",
   },
 }));
-function RegisterForm() {
+function LoginF() {
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -40,24 +40,17 @@ function RegisterForm() {
     setShowRetypePassword((prevShowRetypePassword) => !prevShowRetypePassword);
   };
   const schema = yup.object().shape({
-    fullName: yup.string().required("Please enter your full name"),
     email: yup
       .string()
       .email("Invalid email")
       .required("Please enter your email"),
     password: yup.string().required("Please enter your password"),
-    retypePassword: yup
-      .string()
-      .oneOf([yup.ref("password"), null], "Passwords must match")
-      .required("Please retype your password"),
   });
 
   const form = useForm({
     defaultValues: {
-      fullName: "",
       email: "",
       password: "",
-      retypePassword: "",
     },
     resolver: yupResolver(schema),
   });
@@ -80,15 +73,10 @@ function RegisterForm() {
       </Avatar>
 
       <Typography component="h3" variant="h5" className={classes.title}>
-        Create An Account
+        Sign In
       </Typography>
 
       <FormProvider methods={form} onSubmit={handleSubmit(onSubmit2)}>
-        <TextFieldHF
-          className={classes.title}
-          name="fullName"
-          label="Full name"
-        />
         <TextFieldHF className={classes.title} name="email" label="Email" />
         <TextFieldHF
           className={classes.title}
@@ -110,26 +98,6 @@ function RegisterForm() {
           }}
         />
 
-        <TextFieldHF
-          className={classes.title}
-          name="retypePassword"
-          label="Retype Password "
-          type={showretypePassword ? "text" : "password"}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={toggleShowRetypePassword}
-                  edge="end"
-                >
-                  {showretypePassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-
         <Button
           className={classes.submit}
           type="submit"
@@ -137,11 +105,11 @@ function RegisterForm() {
           color="primary"
           fullWidth
         >
-          Create an account
+          SIGN IN
         </Button>
       </FormProvider>
     </div>
   );
 }
 
-export default RegisterForm;
+export default LoginF;

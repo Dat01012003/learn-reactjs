@@ -1,16 +1,15 @@
 import React from "react";
-import RegisterForm from "../RegisterForm";
-
-function Register(props) {
+import LoginForm from "../LoginForm";
+function Login(props) {
   const handleSubmit = (values) => {
     console.log("Form Submit", values);
   };
 
   return (
     <div>
-      <RegisterForm onSubmit={handleSubmit} />
+      <LoginForm onSubmit={handleSubmit} />
     </div>
   );
 }
 
-export default Register;
+export default Login;
