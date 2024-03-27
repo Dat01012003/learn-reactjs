@@ -1,14 +1,15 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LockOutlined } from "@mui/icons-material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Avatar, Button, Typography } from "@mui/material";
+import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Avatar, Button, LinearProgress, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
 import * as yup from "yup";
+import { register } from "../../userSlice";
 import FormProvider from "../../../../components/hook-form/FormProvider";
 import TextFieldHF from "../../../../components/hook-form/TextFieldHF";
 
@@ -28,17 +29,21 @@ const useStyles = makeStyles(() => ({
     margin: "24px 0 16px 0",
   },
 }));
-function RegisterForm() {
-  const classes = useStyles();
 
+function RegisterForm(props) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
-  const [showretypePassword, setShowRetypePassword] = useState(false);
+  const [showRetypePassword, setShowRetypePassword] = useState(false);
+
   const toggleShowPassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
   const toggleShowRetypePassword = () => {
     setShowRetypePassword((prevShowRetypePassword) => !prevShowRetypePassword);
   };
+
   const schema = yup.object().shape({
     fullName: yup.string().required("Please enter your full name"),
     email: yup
@@ -62,19 +67,50 @@ function RegisterForm() {
     resolver: yupResolver(schema),
   });
 
-  const { handleSubmit, watch } = form;
+  const { handleSubmit, reset, watch } = form;
 
   const values = watch();
 
-  console.log("values", values);
+  const handleSubmit3 = async (values) => {
+    console.log("Form Submit", values);
 
-  const onSubmit2 = (data) => {
-    console.log("data", data);
-    form.reset();
+    try {
+      const valuesRegister = {
+        email: values.email,
+        username: values.email,
+        password: values.password,
+        retypePassword: values.retypePassword,
+        fullName: values.fullName,
+      };
+
+      console.log("valuesRegister", valuesRegister);
+
+      // Dispatch the register action
+      const action = register(valuesRegister);
+      const resultAction = await dispatch(action);
+
+      // Unwrap the result to get the user data
+      const user = unwrapResult(resultAction);
+
+      console.log("New user", user);
+
+      // Reset form after successful registration
+      reset();
+    } catch (error) {
+      console.log("Failed to register:", error);
+    }
+
+    const { onSubmit } = props;
+    if (onSubmit) {
+      await onSubmit(values);
+    }
+    reset();
   };
 
+  const { isSubmitting } = form.formState;
   return (
     <div className={classes.root}>
+      {isSubmitting && <LinearProgress />}
       <Avatar className={classes.avatar}>
         <LockOutlined />
       </Avatar>
@@ -83,7 +119,7 @@ function RegisterForm() {
         Create An Account
       </Typography>
 
-      <FormProvider methods={form} onSubmit={handleSubmit(onSubmit2)}>
+      <FormProvider methods={form} onSubmit={handleSubmit(handleSubmit3)}>
         <TextFieldHF
           className={classes.title}
           name="fullName"
@@ -93,7 +129,7 @@ function RegisterForm() {
         <TextFieldHF
           className={classes.title}
           name="password"
-          label="Pass Word"
+          label="Password"
           type={showPassword ? "text" : "password"}
           InputProps={{
             endAdornment: (
@@ -109,12 +145,11 @@ function RegisterForm() {
             ),
           }}
         />
-
         <TextFieldHF
           className={classes.title}
           name="retypePassword"
-          label="Retype Password "
-          type={showretypePassword ? "text" : "password"}
+          label="Retype Password"
+          type={showRetypePassword ? "text" : "password"}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -123,7 +158,7 @@ function RegisterForm() {
                   onClick={toggleShowRetypePassword}
                   edge="end"
                 >
-                  {showretypePassword ? <VisibilityOff /> : <Visibility />}
+                  {showRetypePassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             ),

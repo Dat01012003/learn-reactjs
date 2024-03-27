@@ -16,7 +16,7 @@ function Register() {
       values.username = values.email;
 
       // Dispatch the register action
-      const action = register(values);
+      const action = register({ values });
       const resultAction = await dispatch(action);
 
       // Unwrap the result to get the user data

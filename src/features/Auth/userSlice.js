@@ -6,8 +6,10 @@ export const register = createAsyncThunk(
     async (payload) => {
         try {
             // Call API to register
+            console.log('payload', payload);
             const data = await userApi.register(payload);
-
+            console.log('data',data);
+            
             // Save data to local storage
             localStorage.setItem('access_token', data.jwt);
             localStorage.setItem('user', JSON.stringify(data.user));
@@ -27,6 +29,7 @@ const userSlice = createSlice({
         settings: {},
     },
     reducers: {},
+    // cập nhật dữ liệu
     extraReducers: (builder) => {
         builder.addCase(register.fulfilled, (state, action) => {
             state.current = action.payload;
