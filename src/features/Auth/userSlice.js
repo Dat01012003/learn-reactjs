@@ -1,4 +1,24 @@
-const { createSlice } = require('@reduxjs/toolkit');
+import userApi from '../../api/userApi';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+export const register = createAsyncThunk(
+    'user/register', // Corrected action type string
+    async (payload) => {
+        try {
+            // Call API to register
+            const data = await userApi.register(payload);
+
+            // Save data to local storage
+            localStorage.setItem('access_token', data.jwt);
+            localStorage.setItem('user', JSON.stringify(data.user));
+
+            // Return user data
+            return data.user;
+        } catch (error) {
+            throw error; // Rethrow the error for rejection handling
+        }
+    }
+);
 
 const userSlice = createSlice({
     name: 'user',
@@ -7,6 +27,14 @@ const userSlice = createSlice({
         settings: {},
     },
     reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(register.fulfilled, (state, action) => {
+            state.current = action.payload;
+        });
+        builder.addCase(register.rejected, (state, action) => {
+            // Handle rejection (optional)
+        });
+    }
 });
 
 const { reducer } = userSlice;
